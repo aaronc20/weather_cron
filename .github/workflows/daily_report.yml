@@ -1,0 +1,27 @@
+name: Daily Runner Dashboard
+
+on:
+  schedule:
+    # Runs every 10 minutes (Test Mode)
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run-dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run Dashboard
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python arlington_dashboard.py
